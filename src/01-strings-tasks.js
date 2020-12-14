@@ -202,8 +202,13 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  const centerWidth = new Array(width - 2).fill('─').join('');
+  const middleOneLine = `│${new Array(width - 2).fill(' ').join('')}│\n`;
+  const middle = new Array(height - 2).fill(middleOneLine).join('');
+  const firstLine = `┌${(centerWidth)}┐\n`;
+  const endLine = `└${(centerWidth)}┘\n`;
+  return firstLine + middle + endLine;
 }
 
 
@@ -223,8 +228,17 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  return str.split('').map((e) => {
+    const cod = e.charCodeAt(0);
+    if (cod >= 65 && cod <= 90) {
+      return String.fromCharCode((cod + 13) > 90 ? (cod + 13 - 26) : (cod + 13));
+    }
+    if (cod >= 97 && cod <= 122) {
+      return String.fromCharCode((cod + 13) > 122 ? (cod + 13 - 26) : (cod + 13));
+    }
+    return e;
+  }).join('');
 }
 
 /**
@@ -240,8 +254,8 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return (typeof value === 'string') || (value instanceof String);
 }
 
 
@@ -269,8 +283,31 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  return value.split('').map((e) => {
+    switch (e) {
+      case '♣':
+        return 0;
+      case '♦':
+        return 13;
+      case '♥':
+        return 26;
+      case '♠':
+        return 39;
+      case 'A':
+        return 0;
+      case 'J':
+        return 10;
+      case 'Q':
+        return 11;
+      case 'K':
+        return 12;
+      case '0':
+        return 9;
+      default:
+        return (e - 1);
+    }
+  }).reduce((a, c) => a + c);
 }
 
 
